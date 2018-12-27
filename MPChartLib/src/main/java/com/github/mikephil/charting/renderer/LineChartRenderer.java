@@ -25,6 +25,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class LineChartRenderer extends LineRadarRenderer {
@@ -654,10 +655,15 @@ public class LineChartRenderer extends LineRadarRenderer {
             }
 
             int boundsRangeCount = mXBounds.range + mXBounds.min;
-
+            final float rangeSize = mXBounds.range/10.0f;
+            final HashSet<Integer> set = new HashSet<>(10);
             for (int j = mXBounds.min; j <= boundsRangeCount; j++) {
+                final int range = Math.round((j - mXBounds.min)/rangeSize);
+                if (set.contains(Integer.valueOf(range)))
+                    continue;
 
-                Entry e = dataSet.getEntryForIndex(j);
+                final Entry e = dataSet.getEntryForIndex(j);
+                set.add(Integer.valueOf(range));
 
                 if (e == null) break;
 
